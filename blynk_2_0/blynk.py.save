@@ -1,0 +1,19 @@
+import blynklib #библиотека Blynk (перед этим в CMD сделать pip install blynklib)
+import subprocess #библиотека для запуска параллельных процессов
+import webbrowser #библиотека для работы с веб
+import pyautogui #библиотека для эмуляции нажатий клавиш клавиатуры (перед этим в CMD сделать pip install pyautogui)
+import ctypes 
+import config
+import subprocess
+#import os
+
+#os.startfile('runas')
+
+BLYNK_AUTH = "rJ8UsbSsxKcFnGBrhnCums5clai_FhRL" #вставить токен
+
+blynk = blynklib.Blynk(BLYNK_AUTH)
+
+
+#функция для запуска отдельным процессом приложений и команд
+def startcmd(cmd):
+    PIPE = subprocess.PIPE
