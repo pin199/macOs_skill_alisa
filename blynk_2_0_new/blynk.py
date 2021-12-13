@@ -5,9 +5,12 @@ import pyautogui #библиотека для эмуляции нажатий к
 import ctypes 
 import config
 import subprocess
-#import keyboard
+import os
+import keyboard
 
-BLYNK_AUTH = 'rJ8UsbSsxKcFnGBrhnCums5clai_FhRL' #вставить токен
+#os.startfile('runas')
+
+BLYNK_AUTH = "rJ8UsbSsxKcFnGBrhnCums5clai_FhRL" #вставить токен
 
 blynk = blynklib.Blynk(BLYNK_AUTH)
 
@@ -60,24 +63,38 @@ def workwithpin (pinname):
             pass
 
 def flask_request_run_alisa():
-    ngrokFile = "/Users/nikolaj/PythonProg"
-#    s_4 = subprocess.Popen(["gnome-terminal -- bash -c \ 'cd /Users/nikolaj/PythonProg/gitSkillAlisa/skill_alisa_debian/skill-alisa; export FLASK_APP=app.py;python3 -m flask run --port=4000; exec bash;'"],shell=True)
-#    s_1 = subprocess.Popen(["/Users/nikolaj/PythonProg/ngrok","http","4000"])
-    s_4 = subprocess.Popen(["osascript -e 'tell app \"Terminal\" to do script \"cd /Users/nikolaj/PythonProg/gitSkillAlisa/skill_alisa_debian/skill-alisa;export FLASK_APP=app.py;python3 -m flask run --port=4000;\"'"],shell=True)
-    s_1 = subprocess.Popen(["osascript -e 'tell app \"Terminal\" to do script \"/Users/nikolaj/PythonProg/ngrok/ngrok http 4000\"'"],shell=True)
-    print("TEST")
-#    s_1 = subprocess.Popen(["/Users/nikolaj/PythonProg/ngrok","http","4000"])
+	flaskFile = "/Users/nikolaj/PythonProg/gitSkillAlisa/skill_alisa"
+	flaskNameFile = "app.py"
+	ngrokFile = "/Users/nikolaj/PythonProg/ngrok"
+	
+	sub=subprocess.Popen(["/Users/nikolaj/PythonProg/ngrok/ngrok","http", "80"])
+	#keyboard.send("Command+N")
+	subprocess.call(["open","Terminal.app", "ls", "-l"])
+	#os.system("ls -l")
+	#os.system("export FLASK_APP=app.py")
+	#sub1=subprocess.run(["export","FLASK_APP","=",flaskNameFile])
+	sub2 = subprocess.call(["python3", "-m", "flask", "run", "--port=80"])
+
+#	subprocess.call(["cd", ngrokFile])
+#	print("1")
+#	subprocess.call(["./ngrok"])
+
+#	subprocess.call(["cd", flaskFile])
+#	subprocess.call(["export", "FLASK_APP", "=", flaskNameFile])
+#	subprocess.call(["python3", "-m", "flask", "run", "--port=80"])
 
 @blynk.handle_event('write V0')
 def write_virtual_pin_handler(pin, value):
-    if str(value) == "['1']":
-        app="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        subprocess.Popen(app)
-        flask_request_run_alisa()
-        print('open' + app)
+	if str(value) == "['1']":
+		app = "/Applications/Yandex.app/Contents/MacOs/Yandex"
+		subprocess.call(["open", app])
+		flask_request_run_alisa()
+#startcmd(app)
+		print('открываю' + app)
 
 #---------------------Начало блока функций для виртуальных пинов blynk-----------------
-@blynk.handle_event('write V1') #данный пин используем для управления общей громкостью ПК
+"""
+@blynk.handle_event('write V0') #данный пин используем для управления общей громкостью ПК
 def write_virtual_pin_handler(pin, value):
     valuepin = clean_symb (str(value))
     volset = (65535/100)*int(valuepin) #в nircmd 65535 уровней громкость, маппим их на наши 100%
@@ -629,7 +646,7 @@ def write_virtual_pin_handler(pin, value):
         ctypes.windll.user32.MessageBoxW(0, "Формат данного виртуального пина указан неверно в приложении Blynk.", "Blynk Controller by Xottabb14", 0)
 
 #---------------------Конец блока функций для виртуальных пинов blynk-----------------
-
+"""
 while True:
     blynk.run()
 
